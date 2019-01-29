@@ -18,4 +18,5 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.9.1'
+    compile group: 'redis.clients', name: 'jedis', version: '3.0.1'
 }

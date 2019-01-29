@@ -1,8 +1,23 @@
-{
-  "id": "1",
-  "name": "mongodb",
-  "credentials": {
-    "user": "admin",
-    "pass": "mypass"
+
+[
+  {
+    "id": "1",
+    "name": "mongodb",
+    "database": "sample",
+    "host": "localhost",
+    "credentials": {
+      "user": "admin",
+      "pass": "mypass"
+    }
+  },
+  {
+    "id": "2",
+    "name": "redis",
+    "database": "unkown",
+    "host": "localhost",
+    "credentials": {
+      "user": "admin",
+      "pass": "mypass"
+    }
   }
-}
+]
