@@ -9,6 +9,7 @@ import mappers.Credentials;
 import org.bson.Document;
 import redis.clients.jedis.Jedis;
 import repositories.MongoRepo;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,16 +21,17 @@ public class RepoAdmin {
 
     public static void main(String[] args) {
         FileReader configFile = new FileReader();
-        if (configFile.readFile("src/main/resources/config.json")){
+        if (configFile.readFile("src/main/resources/config.json")) {
 
             ObjectMapper map = new ObjectMapper();
             map.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 
             try {
-                List<Config> configs = map.readValue(configFile.getFileReader(), new TypeReference<List<Config>>(){});
+                List<Config> configs = map.readValue(configFile.getFileReader(), new TypeReference<List<Config>>() {
+                });
 
-                for (Config conf: configs) {
-                    switch (conf.getName()){
+                for (Config conf : configs) {
+                    switch (conf.getName()) {
                         case DB_MONGO:
                             connectToMongo(conf);
                             break;
@@ -39,7 +41,7 @@ public class RepoAdmin {
                     }
                 }
 
-            } catch (MongoClientException e){
+            } catch (MongoClientException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -50,6 +52,7 @@ public class RepoAdmin {
 
     /**
      * Connects to mongodb repository
+     *
      * @param config
      */
     private static void connectToMongo(Config config) {
@@ -58,23 +61,24 @@ public class RepoAdmin {
 
         MongoRepo db = new MongoRepo();
 
-        if(! db.connect(config.getDatabase(), credentials.getUser(), credentials.getPass())){
+        if (!db.connect(config.getDatabase(), credentials.getUser(), credentials.getPass())) {
             throw new MongoClientException("No fue posible conectarse a la base de datos");
         }
 
-        MongoDatabase mydb = db.getDatabase();
-        MongoCollection<Document> collection = mydb.getCollection("customers");
+        MongoDatabase dbInstance = db.getDatabase();
+        MongoCollection<Document> collection = dbInstance.getCollection("customers");
 
-        for (Document doc: collection.find()) {
+        for (Document doc : collection.find()) {
             System.out.println(doc.get("name"));
         }
     }
 
     /**
      * Connects to redis repository
+     *
      * @param config
      */
-    private static void connectToRedis(Config config){
+    private static void connectToRedis(Config config) {
         System.out.println("Connecting to Redis");
         Jedis db = new Jedis(config.getHost());
         System.out.println(db.ping());

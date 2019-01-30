@@ -11,7 +11,7 @@ public class MongoRepo implements Repository {
     private static final int DEFAULT_PORT = 27017;
     private MongoDatabase database;
 
-    public Boolean connect(String db, String user, String pass){
+    public Boolean connect(String db, String user, String pass) {
 
         int collections = 0;
         // Creating mongo client
