@@ -2,7 +2,7 @@ import java.io.File;
 
 public class FileReader {
 
-    File fileReader;
+    private File fileReader;
 
     /**
      * Inicializa el onjeto de archivo
@@ -10,7 +10,7 @@ public class FileReader {
      * @param path
      * @return
      */
-    public Boolean readFile(String path) {
+    public boolean readFile(String path) {
         fileReader = new File(path);
         return fileReader.exists() && fileReader.isFile();
     }

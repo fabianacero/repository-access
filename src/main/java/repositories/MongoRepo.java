@@ -11,16 +11,17 @@ public class MongoRepo implements Repository {
     private static final int DEFAULT_PORT = 27017;
     private MongoDatabase database;
 
-    public Boolean connect(String db, String user, String pass) {
+    public boolean connect(String db, String user, String pass){
 
         int collections = 0;
         // Creating mongo client
         MongoClient mongo = new MongoClient("localhost", DEFAULT_PORT);
 
         // Creating credentials
+        // TODO WTF!
         MongoCredential credentials = MongoCredential.createCredential(user, db, pass.toCharArray());
 
-        // Accesing Data
+        // Accessing Data
         database = mongo.getDatabase(db);
         ListDatabasesIterable<Document> databases = mongo.listDatabases();
 
@@ -33,9 +34,5 @@ public class MongoRepo implements Repository {
 
     public MongoDatabase getDatabase() {
         return database;
-    }
-
-    public void setDatabase(MongoDatabase database) {
-        this.database = database;
     }
 }

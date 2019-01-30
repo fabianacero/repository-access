@@ -26,34 +26,30 @@ public class RepoAdmin {
             ObjectMapper map = new ObjectMapper();
             map.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
 
+            List<Config> configs = null;
             try {
-                List<Config> configs = map.readValue(configFile.getFileReader(), new TypeReference<List<Config>>() {
+                configs = map.readValue(configFile.getFileReader(), new TypeReference<List<Config>>() {
                 });
-
-                for (Config conf : configs) {
-                    switch (conf.getName()) {
-                        case DB_MONGO:
-                            connectToMongo(conf);
-                            break;
-                        case DB_REDIS:
-                            connectToRedis(conf);
-                            break;
-                    }
-                }
-
-            } catch (MongoClientException e) {
-                e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Failed to deserialize JSON: " + e.getMessage());
+                System.exit(-1);
+            }
+
+            for (Config conf : configs) {
+                switch (conf.getName()) {
+                    case DB_MONGO:
+                        connectToMongo(conf);
+                        break;
+                    case DB_REDIS:
+                        connectToRedis(conf);
+                        break;
+                }
             }
         }
-
     }
 
     /**
      * Connects to mongodb repository
-     *
-     * @param config
      */
     private static void connectToMongo(Config config) {
 
@@ -65,8 +61,8 @@ public class RepoAdmin {
             throw new MongoClientException("No fue posible conectarse a la base de datos");
         }
 
-        MongoDatabase dbInstance = db.getDatabase();
-        MongoCollection<Document> collection = dbInstance.getCollection("customers");
+        MongoDatabase mongoDb = db.getDatabase();
+        MongoCollection<Document> collection = mongoDb.getCollection("customers");
 
         for (Document doc : collection.find()) {
             System.out.println(doc.get("name"));
@@ -75,8 +71,6 @@ public class RepoAdmin {
 
     /**
      * Connects to redis repository
-     *
-     * @param config
      */
     private static void connectToRedis(Config config) {
         System.out.println("Connecting to Redis");
