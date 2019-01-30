@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Config {
     private int id;
+    private boolean enabled;
     private String name;
     private Credentials credentials;
     private String database;
@@ -29,24 +30,16 @@ public class Config {
         return credentials;
     }
 
-    public void setCredentials(Credentials credentials) {
-        this.credentials = credentials;
-    }
-
     public String getDatabase() {
         return database;
-    }
-
-    public void setDatabase(String database) {
-        this.database = database;
     }
 
     public String getHost() {
         return host;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public boolean isEnabled() {
+        return enabled;
     }
 
     @Override

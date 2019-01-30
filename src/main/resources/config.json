@@ -1,6 +1,7 @@
 [
   {
     "id": "1",
+    "enabled": false,
     "name": "mongodb",
     "database": "sample",
     "host": "localhost",
@@ -11,12 +12,13 @@
   },
   {
     "id": "2",
+    "enabled": true,
     "name": "redis",
     "database": "unkown",
     "host": "localhost",
     "credentials": {
       "user": "admin",
-      "pass": "mypass"
+      "pass": "Ch4ng3m3"
     }
   }
 ]

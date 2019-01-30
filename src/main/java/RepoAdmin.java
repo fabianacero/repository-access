@@ -36,6 +36,11 @@ public class RepoAdmin {
             }
 
             for (Config conf : configs) {
+
+                if (!conf.isEnabled()) {
+                    continue;
+                }
+
                 switch (conf.getName()) {
                     case DB_MONGO:
                         connectToMongo(conf);
@@ -57,7 +62,7 @@ public class RepoAdmin {
 
         MongoRepo db = new MongoRepo();
 
-        if (!db.connect(config.getDatabase(), credentials.getUser(), credentials.getPass())) {
+        if (!db.connect(config.getDatabase(), credentials.getUser(), credentials.getPass(), config.getHost())) {
             throw new MongoClientException("No fue posible conectarse a la base de datos");
         }
 
@@ -73,8 +78,14 @@ public class RepoAdmin {
      * Connects to redis repository
      */
     private static void connectToRedis(Config config) {
-        System.out.println("Connecting to Redis");
-        Jedis db = new Jedis(config.getHost());
-        System.out.println(db.ping());
+        Jedis redisDb = new Jedis(config.getHost());
+        redisDb.auth(config.getCredentials().getPass());
+        redisDb.set("database", config.getDatabase());
+        redisDb.set("timestamp", String.valueOf(System.currentTimeMillis()));
+        redisDb.set("caller-class", RepoAdmin.class.toString());
+
+        for (String element : redisDb.keys("*")) {
+            System.out.println(element + " -> " + redisDb.get(element));
+        }
     }
 }
